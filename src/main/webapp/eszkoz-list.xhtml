@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+<ui:composition template="layout.xhtml" >
+	<ui:define name="content">
+
+			<h:form id="empForm" rendered="#{loginController.hasAnyRole('USER', 'ADMIN')}">
+				<p:dataTable id="table" var="tool"
+							 value="#{eszkozFetcherController.tools}">
+					<p:column>
+						<f:facet name="header"># Tool id</f:facet>
+						<h:outputText value="#{tool.id}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Brand</f:facet>
+						<h:outputText value="#{tool.marka}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Type </f:facet>
+						<h:outputText value="#{tool.tipus}">
+						</h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">Description </f:facet>
+						<h:outputText value="#{tool.leiras}">
+						</h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">State </f:facet>
+						<h:outputText value="#{tool.jelleg}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Owner </f:facet>
+						<h:outputText value="#{tool.tulajdonos.nev}" />
+						&nbsp;
+						<h:commandLink value="Edit"
+									   action="#{eszkozUIController.addOwner(tool.id)}" />
+					</p:column>
+					<p:column id="action">
+						<f:facet name="header">Action</f:facet>
+						<h:commandLink value="Edit"
+									   action="#{eszkozUIController.editTool(tool.id)}">
+<!--							<f:ajax execute="action" render="empForm" />-->
+						</h:commandLink> /
+
+						<h:commandLink value="Delete"
+									   action="#{eszkozUIController.deleteTool(tool.id)}"
+									   rendered="#{loginController.hasAnyRole('USER', 'ADMIN')}">
+							<f:ajax execute="action" render="table" />
+						</h:commandLink>
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,17 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:sec="http://www.springframework.org/security/tags"
+                xmlns:h="http://java.sun.com/jsf/html">
+    <h:panelGroup layout="block" rendered="#{loginController.hasAnyRole('USER', 'ADMIN')}">
+        <p:menubar >
+            <p:menuitem value="Tool list" url="/eszkoz-list.jsf" />
+            <p:menuitem value="List owners" url="/list-owner.jsf" />
+            <p:menuitem value="New tool" url="/new-eszkoz.jsf" rendered="#{loginController.hasRole('ROLE_ADMIN')}" />
+        </p:menubar >
+        <div style="position: absolute; right: 16px; top: 16px;" >
+            <p:commandButton value="Logout" action="#{loginController.doLogout}" />
+        </div>
+    </h:panelGroup>
+
+</ui:composition>

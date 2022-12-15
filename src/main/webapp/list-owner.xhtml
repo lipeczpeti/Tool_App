@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+<ui:composition template="layout.xhtml" >
+	<ui:define name="content">
+		<p:autoUpdate/>
+			<h:form id="empForm" rendered="#{loginController.hasAnyRole('USER', 'ADMIN')}">
+
+				<p:dataTable id="table" var="owner"
+							 value="#{tulajdonosUIController.owners}">
+					<p:column>
+						<f:facet name="header"># Owner id</f:facet>
+						<h:outputText value="#{owner.id}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Name</f:facet>
+						<h:outputText value="#{owner.nev}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">National ID number </f:facet>
+						<h:outputText value="#{owner.szemelyi}">
+						</h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">Birthday </f:facet>
+						<h:outputText value="#{owner.szuldatum}">
+						</h:outputText>
+					</p:column>
+					<p:column id="action">
+						&nbsp;
+						<h:commandLink value="Delete"
+									   action="#{tulajdonosUIController.deleteOwner(owner.id)}">
+						</h:commandLink>
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+
+		<hr />
+
+		<h:form method="post">
+			<p:panelGrid columns="1" styleClass="ui-fluid center ui-noborder">
+				<h2>Add new owner</h2>
+				<p:inputText id="username" name="username"  placeholder="Name" value="#{tulajdonosUIController.newOwnerName}" />
+				<p:inputText id="nationalId" name="nationalId"  placeholder="National id number" value="#{tulajdonosUIController.newOwnerNationalId}" />
+				<p:datePicker id="bd" placeholder="Birthday" value="#{tulajdonosUIController.newOwnerBirthdate}" />
+
+				<p:commandButton value="Add new owner" action="#{tulajdonosUIController.addOwner}"/>
+			</p:panelGrid>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>
